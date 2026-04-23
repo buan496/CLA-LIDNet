@@ -1,0 +1,27 @@
+# Python cache and virtualenv artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# Training outputs and local artifacts
+language_recognition_system/checkpoints/
+
+# Local tooling state
+.claude/
+
+# Datasets
+dataset/
+dataset_commonlanguage_3lang/
+dataset_fleurs240/
+dataset_vox_micro300/
+dataset_vox_trial/
+
+# Thesis/project materials that are not source code
+毕设相关材料-发学生-2026/
+论文材料/
+*.pdf
+*.zip
+template_extracted.txt

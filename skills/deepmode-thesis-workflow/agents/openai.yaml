@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deepmode Thesis Workflow"
+  short_description: "Iterate thesis, references, figures, and exports"
+  default_prompt: "Improve the H:\\deepmode graduation thesis by auditing local requirements, expanding references with strong Chinese coverage, refining figures, and regenerating thesis outputs."

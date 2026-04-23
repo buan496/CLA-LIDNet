@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>语言识别系统</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">Deep Learning LID Demo</p>
+      <h1>基于深度学习的语言识别系统</h1>
+      <p class="lead">
+        上传一段 <code>.wav</code> 语音，系统会给出预测语种和 Top-3 置信度。
+      </p>
+    </section>
+
+    <section class="panel meta">
+      <div>
+        <span class="meta-label">模型权重</span>
+        <span class="meta-value">{{ checkpoint_path }}</span>
+      </div>
+      <div>
+        <span class="meta-label">推理设备</span>
+        <span class="meta-value">{{ device }}</span>
+      </div>
+      <div>
+        <span class="meta-label">模型状态</span>
+        <span class="meta-value {{ 'ok' if model_ready else 'warn' }}">
+          {{ '已就绪' if model_ready else '未找到权重' }}
+        </span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <form method="post" enctype="multipart/form-data" class="upload-form">
+        <label class="file-input">
+          <span>选择语音文件</span>
+          <input type="file" name="audio" accept=".wav">
+        </label>
+        <button type="submit">开始识别</button>
+      </form>
+
+      {% if error %}
+      <div class="message error">{{ error }}</div>
+      {% endif %}
+
+      {% if result %}
+      <div class="result-card">
+        <h2>识别结果</h2>
+        <div class="prediction">
+          <span class="prediction-label">预测语言</span>
+          <strong>{{ result.predicted_label }}</strong>
+        </div>
+        <div class="prediction">
+          <span class="prediction-label">置信度</span>
+          <strong>{{ "%.4f"|format(result.predicted_score) }}</strong>
+        </div>
+
+        <h3>Top-3 候选</h3>
+        <ul class="rank-list">
+          {% for item in result.top_k %}
+          <li>
+            <span>{{ item.label }}</span>
+            <span>{{ "%.4f"|format(item.score) }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </section>
+
+    <section class="panel tips">
+      <h2>数据目录约定</h2>
+      <pre>dataset/
+  zh/
+    a.wav
+    b.wav
+  en/
+    c.wav
+  ja/
+    d.wav</pre>
+      <p>
+        如果训练集较大，建议直接把这个项目放到云服务器，在 <code>nlp100</code> 环境中用
+        <code>--device cuda</code> 训练。
+      </p>
+    </section>
+  </main>
+</body>
+</html>
